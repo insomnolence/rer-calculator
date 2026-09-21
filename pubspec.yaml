@@ -1,0 +1,46 @@
+name: rer_calculator
+description: "RER Calculator for veterinary use - calculates Resting Energy Requirements for pets."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.9
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/app_icon.png"
+  macos:
+    generate: true
+    image_path: "assets/icon/app_icon.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/app_icon.png"
+    icon_size: 256
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # Optional, gitignored brand pack. Only .gitkeep and README.md are tracked,
+    # so this resolves to an empty folder in a fresh clone and the app falls
+    # back to the generic identity in lib/branding.dart.
+    - assets/brand/
+
+  fonts:
+    - family: DroidSansMono
+      fonts:
+        - asset: assets/fonts/droid-sans-mono.ttf

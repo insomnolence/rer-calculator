@@ -1,0 +1,35 @@
+# Opens PRs when a pinned dependency has a newer version. The CI workflow runs
+# against each PR, so a bump only looks safe if analyze, the tests and all five
+# platform builds pass on it.
+version: 2
+
+updates:
+  # Dart / Flutter packages in pubspec.yaml
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      dart-dependencies:
+        patterns: ["*"]
+
+  # Android Gradle Plugin, Kotlin and any Gradle dependencies
+  - package-ecosystem: "gradle"
+    directory: "/android"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      gradle-dependencies:
+        patterns: ["*"]
+
+  # The actions used by .github/workflows/ci.yml
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns: ["*"]

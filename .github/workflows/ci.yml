@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A newer push to the same branch supersedes an in-flight run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned so CI is reproducible rather than drifting with each Flutter
+  # release. Bump deliberately, and run `flutter analyze` locally on the new
+  # version first.
+  FLUTTER_VERSION: "3.47.5"
+
+# Runner images are pinned to explicit labels rather than `*-latest`. The
+# `-latest` aliases are reassigned when GitHub promotes a new image (Ubuntu
+# moves to 26.04 in November 2026), which would silently change the Xcode,
+# MSVC and GTK versions the builds run against. These values are what the
+# `-latest` aliases resolved to when this was written, so pinning them changed
+# nothing at the time -- it only froze them.
+
+jobs:
+  analyze-and-test:
+    name: Analyze and test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+  build:
+    name: Build ${{ matrix.target }}
+    needs: analyze-and-test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # One platform failing should not hide the state of the others.
+      fail-fast: false
+      matrix:
+        include:
+          - target: Android
+            os: ubuntu-24.04
+          - target: Linux
+            os: ubuntu-24.04
+          - target: iOS
+            os: macos-26
+          - target: macOS
+            os: macos-26
+          - target: Windows
+            os: windows-2025
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        if: matrix.target == 'Android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Linux desktop toolchain
+        if: matrix.target == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config \
+                                  libgtk-3-dev liblzma-dev
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # Debug builds throughout: they exercise the same compile and asset
+      # pipeline as release without needing signing material on CI.
+      - name: Build Android APK
+        if: matrix.target == 'Android'
+        run: flutter build apk --debug
+
+      - name: Build Linux desktop
+        if: matrix.target == 'Linux'
+        run: flutter build linux --debug
+
+      # --no-codesign builds without an Apple Developer account, which is
+      # enough to prove the target compiles.
+      - name: Build iOS
+        if: matrix.target == 'iOS'
+        run: flutter build ios --debug --no-codesign
+
+      - name: Build macOS desktop
+        if: matrix.target == 'macOS'
+        run: flutter build macos --debug
+
+      - name: Build Windows desktop
+        if: matrix.target == 'Windows'
+        run: flutter build windows --debug

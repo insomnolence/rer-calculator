@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Launcher icon source.
+     The paw geometry matches PawMark in lib/widgets/app_logo.dart (unit 0..1
+     coordinates, scaled to 78% of the tile and centred). The icon additionally
+     carves a food bowl out of the pad as negative space; the in-app mark stays
+     a plain paw, so the two are intentionally not identical.
+     Regenerate the PNG and all platform icons with: tool/generate_icons.sh -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" rx="266" ry="266" fill="#0E7C86"/>
+  <g transform="translate(112.64 112.64) scale(798.72)" fill="#FFFFFF">
+    <ellipse cx="0.175" cy="0.385" rx="0.098" ry="0.128" transform="rotate(-25.78 0.175 0.385)"/>
+    <ellipse cx="0.385" cy="0.265" rx="0.105" ry="0.140" transform="rotate(-9.17 0.385 0.265)"/>
+    <ellipse cx="0.615" cy="0.265" rx="0.105" ry="0.140" transform="rotate(9.17 0.615 0.265)"/>
+    <ellipse cx="0.825" cy="0.385" rx="0.098" ry="0.128" transform="rotate(25.78 0.825 0.385)"/>
+    <path d="M0.5,0.455 C0.66,0.455 0.815,0.575 0.815,0.705
+             C0.815,0.845 0.685,0.925 0.5,0.925
+             C0.315,0.925 0.185,0.845 0.185,0.705
+             C0.185,0.575 0.34,0.455 0.5,0.455 Z"/>
+    <!-- Food bowl in three-quarter view, punched back out in the tile colour:
+         a wide rim ellipse unioned with a tapering body. The white contents are
+         an ellipse plus three overlapping discs, which read as heaped kibble at
+         large sizes and simplify to a plain opening when the icon is small. -->
+    <ellipse fill="#0E7C86" cx="0.500" cy="0.645" rx="0.205" ry="0.055"/>
+    <path fill="#0E7C86"
+          d="M0.295,0.645
+             L0.372,0.775
+             C0.380,0.789 0.392,0.795 0.408,0.795
+             L0.592,0.795
+             C0.608,0.795 0.620,0.789 0.628,0.775
+             L0.705,0.645 Z"/>
+    <g fill="#FFFFFF">
+      <ellipse cx="0.500" cy="0.650" rx="0.150" ry="0.032"/>
+      <circle cx="0.437" cy="0.624" r="0.020"/>
+      <circle cx="0.500" cy="0.620" r="0.021"/>
+      <circle cx="0.563" cy="0.624" r="0.020"/>
+    </g>
+</g>
+</svg>
