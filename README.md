@@ -56,15 +56,15 @@ marking 100% of RER, so the weight-gain zone is visible rather than clipped.
 ## Getting started
 
 Requires the [Flutter SDK](https://docs.flutter.dev/get-started/install)
-(Dart SDK 3.10+).
+3.47 or newer (Dart 3.13+).
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-Built and tested on **Android** and **Linux desktop**. The iOS, macOS and
-Windows targets are configured and should build, but are unverified.
+Runs on Android, iOS, Linux, macOS and Windows. All five are built on CI for
+every push; the analyzer and test suite run once, on Linux.
 
 ```bash
 flutter test      # unit and widget tests
